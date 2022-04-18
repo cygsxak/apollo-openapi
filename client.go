@@ -191,6 +191,15 @@ func (c *client) GetNamespaceLock(env, appID, clusterName, namespaceName string)
 	return
 }
 
+func (c *client) GetItem(env, appID, clusterName, namespaceName, key string) (res *Item, err error) {
+	namespaceName = normalizeNamespace(namespaceName)
+	url := fmt.Sprintf("%s/openapi/v1/envs/%s/apps/%s/clusters/%s/namespaces/%s/items/%s",
+		c.portalAddress, env, appID, clusterName, namespaceName, key)
+	res = &Item{}
+	err = c.do("GET", url, nil, &res)
+	return
+}
+
 func (c *client) AddItem(env, appID, clusterName, namespaceName string, r AddItemRequest) (res *Item, err error) {
 	namespaceName = normalizeNamespace(namespaceName)
 	url := fmt.Sprintf("%s/openapi/v1/envs/%s/apps/%s/clusters/%s/namespaces/%s/items",

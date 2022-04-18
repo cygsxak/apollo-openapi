@@ -16,6 +16,7 @@ type OpenAPI interface {
 	GetNamespace(env, appID, clusterName, namespaceName string) (*Namespace, error)
 	CreateNamespace(r CreateNamespaceRequest) (*CreateNamespaceResponse, error)
 	GetNamespaceLock(env, appID, clusterName, namespaceName string) (*NamespaceLock, error)
+	GetItem(env, appID, clusterName, namespaceName, key string) (*Item, error)
 	AddItem(env, appID, clusterName, namespaceName string, r AddItemRequest) (*Item, error)
 	UpdateItem(env, appID, clusterName, namespaceName string, r UpdateItemRequest) error
 	CreateOrUpdateItem(env, appID, clusterName, namespaceName string, r UpdateItemRequest) error
@@ -94,7 +95,7 @@ type UpdateItemRequest struct {
 	Value                    string `json:"value"`                    // 配置的value，长度不能超过20000个字符，非properties格式，value为文件全部内容
 	Comment                  string `json:"comment"`                  // 配置的备注,长度不能超过1024个字符(非必选)
 	DataChangeLastModifiedBy string `json:"dataChangeLastModifiedBy"` // item的修改人，格式为域账号，也就是sso系统的User ID
-	DataChangeCreatedBy      string `json:"dataChangeCreatedBy"`	  // 当createIfNotExists为true时必选。item的创建人，格式为域账号，也就是sso系统的User ID
+	DataChangeCreatedBy      string `json:"dataChangeCreatedBy"`      // 当createIfNotExists为true时必选。item的创建人，格式为域账号，也就是sso系统的User ID
 }
 
 type PublishReleaseRequest struct {
