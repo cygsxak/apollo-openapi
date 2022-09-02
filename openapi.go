@@ -1,16 +1,21 @@
 package openapi
 
 const (
-	FormatProperties = "properties"
-	FormatXML        = "xml"
-	FormatYML        = "yml"
-	FormatYAML       = "yaml"
-	FormatJSON       = "json"
+	FormatProperties Format = "properties"
+	FormatXML        Format = "xml"
+	FormatYML        Format = "yml"
+	FormatYAML       Format = "yaml"
+	FormatJSON       Format = "json"
 )
 
 type Format string
 
+func (f Format) String() string {
+	return string(f)
+}
+
 type OpenAPI interface {
+	GetApps() ([]Application, error)
 	GetEnvClusters(appID string) ([]EnvWithClusters, error)
 	GetNamespaces(env, appID, clusterName string) ([]Namespace, error)
 	GetNamespace(env, appID, clusterName, namespaceName string) (*Namespace, error)
@@ -25,6 +30,19 @@ type OpenAPI interface {
 	GetRelease(env, appID, clusterName, namespaceName string) (*Release, error)
 }
 
+type Application struct {
+	Name                       string `json:"name"`
+	AppID                      string `json:"appId"`
+	OrgID                      string `json:"orgId"`
+	OrgName                    string `json:"orgName"`
+	OwnerName                  string `json:"ownerName"`
+	OwnerEmail                 string `json:"ownerEmail"`
+	DataChangeCreatedBy        string `json:"dataChangeCreatedBy"`
+	DataChangeLastModifiedBy   string `json:"dataChangeLastModifiedBy"`
+	DataChangeCreatedTime      string `json:"dataChangeCreatedTime"`
+	DataChangeLastModifiedTime string `json:"dataChangeLastModifiedTime"`
+}
+
 type EnvWithClusters struct {
 	Env      string   `json:"env"`
 	Clusters []string `json:"clusters"`
@@ -33,6 +51,7 @@ type EnvWithClusters struct {
 type Item struct {
 	Key                        string `json:"key"`
 	Value                      string `json:"value"`
+	Comment                    string `json:"comment"`
 	DataChangeCreatedBy        string `json:"dataChangeCreatedBy"`
 	DataChangeLastModifiedBy   string `json:"dataChangeLastModifiedBy"`
 	DataChangeCreatedTime      string `json:"dataChangeCreatedTime"`
