@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -209,7 +210,7 @@ func (c *client) AddItem(env, appID, clusterName, namespaceName string, r AddIte
 func (c *client) UpdateItem(env, appID, clusterName, namespaceName string, r UpdateItemRequest) (err error) {
 	namespaceName = normalizeNamespace(namespaceName)
 	url := fmt.Sprintf("%s/openapi/v1/envs/%s/apps/%s/clusters/%s/namespaces/%s/items/%s",
-		c.portalAddress, env, appID, clusterName, namespaceName, r.Key)
+		c.portalAddress, env, appID, clusterName, namespaceName, url.QueryEscape(r.Key))
 	err = c.do("PUT", url, r, nil)
 	return
 }
